@@ -1,59 +1,74 @@
 const db = require('../models')
-
+const Review=db.review
 const User = db.user
 
 // create API
 
 // create 
-const addUser = async(req,res) => {
+const addUser = async (req, res) => {
     let info = {
         name: req.body.name,
         password: req.body.password,
         email: req.body.email
     }
 
-const user = await User.create(info)
-res.status(200).send(user)
+    const user = await User.create(info)
+    res.status(200).send(user)
 }
 
 // get all
 
-const getUser = async (req,res)=>{
+const getUser = async (req, res) => {
 
-        let user = await User.findAll( {
-            attributes:['name','email']
-})
-res.status(200).send(user)
+    let user = await User.findAll({
+        attributes: ['name', 'email']
+    })
+    res.status(200).send(user)
 }
 
 // get one
 
-const getOneUser = async (req,res) =>{
-    let id= req.params.id
-    const user = await User.findOne({ where: { id: id }})
+const getOneUser = async (req, res) => {
+    let id = req.params.id
+    const user = await User.findOne({ where: { id: id } })
     res.status(200).send(user)
 }
 
 // update
 
-const UpdateUser = async (req,res) =>{
+const UpdateUser = async (req, res) => {
     let id = req.params.id
     console.log(id)
-    const user = await User.update(req.body,{ where: { id: id }})
+    const user = await User.update(req.body, { where: { id: id } })
     res.status(200).send(user)
 }
 
 //  Delete
 
-const DeleteUser = async (req,res)=>{
+const DeleteUser = async (req, res) => {
     let id = req.params.id
-    await User.destroy({where:{id: id}})
+    await User.destroy({ where: { id: id } })
     res.status(200).send("Deleted successfully")
 }
-module.exports ={
+
+// get reviews 
+
+const GetReview= async(req,res)=>{
+    const reviews=await User.findAll({
+        include:[{
+            model: Review,
+            as:'review'
+        }],
+        where:{id:req.body.id}
+    })
+    res.status(200).send(reviews)
+}
+
+module.exports = {
     addUser,
     getOneUser,
     getUser,
     UpdateUser,
-    DeleteUser
+    DeleteUser,
+    GetReview
 }

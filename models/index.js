@@ -37,9 +37,20 @@ db.user = require('./User.js')(sequelize,DataTypes)
 db.review = require('./reviewModel.js')(sequelize,DataTypes)
 
 // usage of force: false is to not lose previous information
-db.sequelize.sync({force: false})
+// alter:true update the changes in existing table, it can be used instead of force:false 
+db.sequelize.sync({alter: true})
 .then(() =>{
     console.log("yes sync is done")
+})
+
+db.user.hasMany(db.review,{
+    foreignKey:'user_id',
+    as:'review'
+})
+
+db.review.belongsTo(db.user,{
+    foreignKey:'user_id',
+    as:'user'
 })
 
 module.exports=db

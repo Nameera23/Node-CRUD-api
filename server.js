@@ -20,8 +20,12 @@ app.use(express.urlencoded({extended: true}))
 
 // routers 
 
-const router = require('./routes/UserRouter.js')
-app.use('/api', router)
+const ProductRouter = require('./routes/UserRouter.js')
+app.use('/api', ProductRouter)
+
+const ReviewRouter =require('./routes/ReviewRouter.js')
+app.use('/api1',ReviewRouter)
+
 
 app.get('/', (req,res) =>{
     res.json({message: 'Hello server online'})

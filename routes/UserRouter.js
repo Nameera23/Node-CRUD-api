@@ -6,6 +6,8 @@ router.post('/addUser',UserController.addUser)
 
 router.get('/getUser',UserController.getUser)
 
+router.get('/getReview',UserController.GetReview)
+
 router.get('/:id',UserController.getOneUser)
 
 router.put('/:id',UserController.UpdateUser)
