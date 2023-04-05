@@ -42,9 +42,16 @@ const getUser = async (req, res) => {
 // get one
 
 const getOneUser = async (req, res) => {
-    let id = req.params.id
-    const user = await User.findOne({ where: { id: id } })
-    res.status(200).send(user)
+
+    const verify= await User.findOne({where:{email:req.body.email}})
+    if(!verify) return res.status(404).send("INVALID EMAIL")
+    const pass= await bcrypt.compare(req.body.password, verify.password)
+    if(!pass){
+        res.status(404).send("PASSWORD NOT MATCH")
+    }
+    else{
+    res.status(200).send("SUCCESSFULLY LOGIN")
+    }
 }
 
 // update

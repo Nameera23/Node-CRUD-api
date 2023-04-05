@@ -8,7 +8,7 @@ router.get('/getUser',UserController.getUser)
 
 router.get('/getReview',UserController.GetReview)
 
-router.get('/:id',UserController.getOneUser)
+router.get('/login',UserController.getOneUser)
 
 router.put('/:id',UserController.UpdateUser)
 
