@@ -1,4 +1,5 @@
 const db = require('../models')
+const bcrypt=require('bcrypt')
 const Review=db.review
 const User = db.user
 
@@ -6,14 +7,26 @@ const User = db.user
 
 // create 
 const addUser = async (req, res) => {
-    let info = {
-        name: req.body.name,
-        password: req.body.password,
-        email: req.body.email
-    }
 
-    const user = await User.create(info)
-    res.status(200).send(user)
+    const userExist = await User.findOne({where: {email:req.body.email}})
+    if(userExist)
+    {
+        return res.status(404).send("USER ALREADY EXIST PLEASE SIGNUP WITH ANOTHER EMAIL")
+    }
+    else
+    {
+            const salt= await bcrypt.genSalt(10)
+            const hashPass = await bcrypt.hash(req.body.password,salt)
+
+            let info = {
+                name: req.body.name,
+                password: hashPass,
+                email: req.body.email
+            }
+
+            const user = await User.create(info)
+            res.status(200).send(user)
+        }
 }
 
 // get all
